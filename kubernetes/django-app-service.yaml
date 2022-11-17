@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app-deployment
+  labels:
+    environment: dev
+    name       : django-app
+    instance   : django-app-devman
+    part-of    : django-app
+    owner      : rs0x069
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: django-app
+  template:
+    metadata:
+      labels:
+        project: django-app
+    spec:
+      containers:
+      - name: container-django-app
+        image: django_app:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: django-app-env
+        ports:
+          - containerPort: 80
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-app-service
+  labels:
+    environment: dev
+    name       : django-app
+    instance   : django-app-devman
+    part-of    : django-app
+    owner      : rs0x069
+spec:
+  selector:
+    project: django-app
+  type: NodePort
+  ports:
+    - name      : django-app-listener
+      protocol  : TCP
+      port      : 80

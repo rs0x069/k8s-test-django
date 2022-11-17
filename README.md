@@ -32,3 +32,43 @@ $ docker-compose run web ./manage.py createsuperuser
 `ALLOWED_HOSTS` -- настройка Django со списком разрешённых адресов. Если запрос прилетит на другой адрес, то сайт ответит ошибкой 400. Можно перечислить несколько адресов через запятую, например `127.0.0.1,192.168.0.1,site.test`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts).
 
 `DATABASE_URL` -- адрес для подключения к базе данных PostgreSQL. Другие СУБД сайт не поддерживает. [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
+
+
+## Запуск в Kebernetes
+
+Запустите где-нибудь снаружи Postgres. Для теста можно запустить в докере командой:
+```bash
+docker compose -f docker-compose.yml -f docker-compose.onlydb.yml up -d
+```
+
+Переименуйте файл `kubernetes/django-app-env.yaml.example` в `kubernetes/django-app-env.yaml`:
+```bash
+cp django-app-env.yaml.example django-app-env.yaml
+```
+
+ Установите значения [переменных окружения](#переменные-окружения) в файле `kubernetes/django-app-env.yaml`.
+
+ Последовательно выполните следующие команды:
+ ```bash
+ kubectl apply -f kubernetes/django-app-env.yaml
+ kubectl apply -f kubernetes/django-app-service.yaml
+ ```
+
+ TCP-порт, на котором работает сервис, можно посмотреть в выводе команды:
+ ```
+ kubectl get services django-app-service
+ ```
+ или, если используете minikube:
+ ```bash
+ minikube service django-app-service --url
+ ```
+
+Статус запуска подов можно посмотреть командой:
+```bash
+kubectl get pods
+```
+
+Если Вы изменили переменные окружения, необходимо перезапустить Deployment командой:
+```bash
+kubectl rollout restart deployment django-app-deployment
+```
