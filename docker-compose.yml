@@ -16,7 +16,7 @@ services:
     volumes:
       - ./backend_main_django:/code
     environment: 
-      SECRET_KEY: ${WEB_SECRET_KEY-REPLACE_ME}
+      SECRET_KEY: ${WEB_SECRET_KEY-bvp5hb+=hyu&umx+2kj@y_w5@w%q^w+cyh$@^fn=g5xyu+ypkf}
       DEBUG: ${WEB_DEBUG-TRUE}
       DATABASE_URL: ${WEB_DATABASE_URL-postgres://test_k8s:OwOtBep9Frut@db:5432/test_k8s}
       ALLOWED_HOSTS: ${WEB_ALLOWED_HOSTS-127.0.0.1,localhost}
