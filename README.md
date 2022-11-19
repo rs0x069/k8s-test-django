@@ -73,6 +73,11 @@ kubectl get pods
 kubectl rollout restart deployment django-app-deployment
 ```
 
+Для применения миграций, запустите `Job` командой:
+```bash
+kubectl apply -f kubernetes/django-app-migrate.yaml
+```
+
 ### Запуск Ingress
 
 1. В случае, если используется в качестве кластера `minikube`, в файле `/ets/hosts` укажите ip-адрес `minikube` и доменное имя `star-burger.test`

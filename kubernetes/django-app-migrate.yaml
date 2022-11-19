@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-app-migrate
+  labels:
+    environment: dev
+    name       : django-app-job
+    instance   : django-app-devman
+    part-of    : django-app
+    owner      : rs0x069
+spec:
+  activeDeadlineSeconds: 120
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: django_app:latest
+        imagePullPolicy: IfNotPresent
+        command: ["python", "manage.py", "migrate", "--noinput"]
+        envFrom:
+          - configMapRef:
+              name: django-app-env
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      restartPolicy: Never
