@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: django-app-cronjob
+  labels:
+    environment: dev
+    name       : django-app-cronjob
+    instance   : django-app-devman
+    part-of    : django-app
+    owner      : rs0x069
+spec:
+  schedule: "0 0 * * 0"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: django-clearsessions
+            image: django_app:latest
+            imagePullPolicy: IfNotPresent
+            command:
+              - python
+              - manage.py
+              - clearsessions
+            envFrom:
+              - configMapRef:
+                  name: django-app-env
+            resources:
+              limits:
+                memory: "128Mi"
+                cpu: "500m"
+          restartPolicy: OnFailure

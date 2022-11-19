@@ -88,3 +88,12 @@ kubectl apply -f kubernetes/django-app-ingress.yaml
 Сайт будет доступен по адресу `star-burger.test`
 
 Можно указать произвольное доменное имя, для этого нужно его так же указать в файле `kubernetes/django-app-ingress.yaml` и в переменной окружения `ALLOWED_HOSTS` в файле `kubernetes/django-app-env.yaml`.
+
+### Удаление устаревших сессий
+
+Для удаления устаревших сессий, запустите `CronJob` командой:
+```bash
+kubectl apply -f kubernetes/django-app-cronjobs.yaml
+```
+
+По умолчанию, удаление устаревших сессий выполняется раз в неделю.
