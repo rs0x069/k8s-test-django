@@ -72,3 +72,19 @@ kubectl get pods
 ```bash
 kubectl rollout restart deployment django-app-deployment
 ```
+
+### Запуск Ingress
+
+1. В случае, если используется в качестве кластера `minikube`, в файле `/ets/hosts` укажите ip-адрес `minikube` и доменное имя `star-burger.test`
+```bash
+echo "$(minikube ip) star-burger.test" | sudo tee -a /etc/hosts
+```
+
+2. Запустите Ingress командой:
+```bash
+kubectl apply -f kubernetes/django-app-ingress.yaml
+```
+
+Сайт будет доступен по адресу `star-burger.test`
+
+Можно указать произвольное доменное имя, для этого нужно его так же указать в файле `kubernetes/django-app-ingress.yaml` и в переменной окружения `ALLOWED_HOSTS` в файле `kubernetes/django-app-env.yaml`.

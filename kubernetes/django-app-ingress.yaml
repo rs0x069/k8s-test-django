@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # disable the SSL redirect
+  labels:
+    name: main-ingress
+    owner: rs0x069
+spec:
+  rules:
+  - host: star-burger.test
+    http:
+      paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: django-app-service
+              port: 
+                number: 80
