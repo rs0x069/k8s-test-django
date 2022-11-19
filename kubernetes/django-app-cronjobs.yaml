@@ -10,12 +10,16 @@ metadata:
     owner      : rs0x069
 spec:
   schedule: "0 0 * * 0"
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 180
+      backoffLimit: 3
+      ttlSecondsAfterFinished: 60
       template:
         spec:
           containers:
-          - name: django-clearsessions
+          - name: django-app-clearsessions
             image: django_app:latest
             imagePullPolicy: IfNotPresent
             command:
