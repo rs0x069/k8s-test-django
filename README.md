@@ -75,7 +75,7 @@ kubectl rollout restart deployment django-app-deployment
 
 Для применения миграций, запустите `Job` командой:
 ```bash
-kubectl apply -f kubernetes/django-app-migrate.yaml
+kubectl apply -f kubernetes/django-app-job-migrate.yaml
 ```
 
 ### Запуск Ingress
